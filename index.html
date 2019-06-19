@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="english" >
+<head>
+<!-- Mobile Specific Meta -->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Favicon-->
+<link rel="shortcut icon" href="Jane.png">
+<!-- Author Meta -->
+<meta name="author" content="Irelia Adler">
+<!-- Meta Description -->
+<meta name="description" content="">
+<!-- Meta Keyword -->
+<meta name="keywords" content="">
+<!-- meta character set -->
+<meta charset="UTF-8">
+<!-- Site Title -->
+<title>Ionian Guardian</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="main.css">
+</head>
+
+<body> 
+<h2>I &#x2764;&#xFE0E; Irelia, patch: 9.12</h2> 
+
+<div class="column">
+	<h4>
+		<label class="theLabels">Time:</label>
+		<div style="width: 50%;float: right">
+			<input id="secs-input" type='number' style="width: 30%;float: right;" min='0' value='05' max='59'  autocomplete='off' 
+			onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '00'; else this.value=('0'+ this.value).slice(-2);"/>
+			<text style="float: right;"> : </text>		
+			<input id="mins-input" type='number' style="width: 30%;float: right;" min='0' value='01'  autocomplete='off' 
+			onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '00'; else this.value=('0'+ this.value).slice(-2);"/>
+		</div>
+	</h4>
+</div>
+<div id="time-slider">
+<div id="time-handle" class="ui-slider-handle"></div>
+</div>
+
+<h4>Level:</h4>
+<div id="level-slider">
+<div id="level-handle" class="ui-slider-handle"></div>
+</div>
+
+<div class="column">
+	<h4>
+		<label class="theLabels">Bonus|Total AD:</label>
+		<div style="width: 50%;float: right">
+			<input id="tad-input" type='number' style="width: 30%;float: right;" value='63' type='number' autocomplete='off' 
+			onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
+			<text style="float: right;"> | </text>		
+			<input id="bad-input" type='number' style="width: 30%;float: right;" min='0' value='0'  autocomplete='off'  
+			onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
+		</div>
+	</h4>
+</div>
+<div id="bad-slider">
+<div id="bad-handle" class="ui-slider-handle"></div>
+</div>
+
+<br />
+<table id="main-data-table"></table>
+
+<h4>Sheen item proc:</h4>
+<div id="sheen-slider">
+<div id="sheen-handle" class="ui-slider-handle"></div>
+</div>
+
+<br />
+<table id="sheen-data-table"></table>
+
+<h4>Passive stacked fully:</h4>
+<div id="passive-slider">
+<div id="passive-handle" class="ui-slider-handle"></div>
+</div>
+
+<h4>Conqueror stacks:</h4>
+<div id="conqueror-slider">
+<div id="conqueror-handle" class="ui-slider-handle"></div>
+</div>
+
+<h4>Wit's End:</h4>
+<div id="witsend-slider">
+<div id="witsend-handle" class="ui-slider-handle"></div>
+</div>
+
+<div class="column">
+	<h4>
+		<label class="theLabels">Titanic Hydra on-hit dmg:</label>
+		<input id="hydra-input" class="theInputs" value='0' type='number' autocomplete='off' min='0'
+		onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
+	</h4>
+</div>
+<div id="hydra-slider">
+<div id="hydra-handle" class="ui-slider-handle"></div>
+</div>
+<br />
+<table id="extra-data-table"></table>
+<div class="column">
+	<h4>
+		<label class="theLabels">Enemy's HP:</label>
+		<input id="enemyhp-input" class="theInputs" value='1000' type='number' autocomplete='off' min='0'
+		onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
+	</h4>
+</div>
+<div id="enemyhp-slider">
+<div id="enemyhp-handle" class="ui-slider-handle"></div>
+</div>
+<div class="column">
+	<h4>
+		<label class="theLabels">Enemy's Armor:</label>
+		<input id="enemypra-input" class="theInputs" value='0' type='number' autocomplete='off'
+		onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
+	</h4>
+</div>
+<div id="enemypra-slider">
+<div id="enemypra-handle" class="ui-slider-handle"></div>
+</div>
+
+<div class="column">
+	<h4>
+		<label class="theLabels">Enemy's MR:</label>
+		<input id="enemymra-input" class="theInputs" value='0' type='number' autocomplete='off'
+		onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
+	</h4>
+</div>
+<div id="enemymra-slider">
+<div id="enemymra-handle" class="ui-slider-handle"></div>
+</div>
+<br />
+<table id="enemy-data-table"></table>
+
+
+
+
+
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+<script src="jquery.ui.touch-punch.min.js"></script>
+
+<script src="main.js"></script>
+</html>

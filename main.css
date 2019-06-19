@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata|Montserrat');
+body {
+  font-family: 'Montserrat', sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+html { 
+  background: url(Irelia.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+html, body {
+    padding: 3px;
+}
+
+#main-data-table, 
+#extra-data-table,
+#sheen-data-table,
+#enemy-data-table {
+    width: 360px;
+    font-size:13px;
+    text-align: right;
+    font-weight: bold;
+    margin-left: -2px;
+}
+
+#main-data-table thead td, 
+#extra-data-table thead td,
+#sheen-data-table thead td,
+#enemy-data-table thead td{
+    background-color: #8CCCF1;
+}
+
+#main-data-table td, 
+#sheen-data-table td,
+#extra-data-table td,
+#enemy-data-table td {
+    border: 1px solid #466E85;
+    padding: 2px;
+    background-color: #8CCCF1; 
+}
+
+
+#level-slider, 
+#bad-slider,
+#time-slider,
+#sheen-slider,
+#passive-slider,
+#conqueror-slider,
+#witsend-slider,
+#hydra-slider,
+#enemypra-slider,
+#enemymra-slider,
+#enemyhp-slider {
+  width: 300px;
+  margin-left: 9px;
+  margin-right: 9px;
+}
+
+#level-handle, 
+#bad-handle, 
+#time-handle,
+#sheen-handle,
+#passive-handle,
+#conqueror-handle,
+#witsend-handle,
+#hydra-handle,
+#enemypra-handle,
+#enemymra-handle,
+#enemyhp-handle {
+  width: 3.6em;
+  height: 1.6em;
+  top: 50%;
+  margin-top: -.8em;
+  text-align: center;
+  line-height: 1.6em;
+  background-color: #9678b6;
+  border-color: #9678b6;
+  font-weight: bold;
+}
+
+
+.column{
+    width:310px;
+    display:inline-block;
+    
+}
+.theLabels{
+  
+  width:65%
+  float:left;
+}
+.theInputs{
+  width:20%;
+  float:right;
+}
+
+h4 { 
+  display: block;
+  font-size: 1em;
+  margin-top: 0.9em;
+  margin-bottom: 0.9em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+::selection {
+color: #fff;
+background: #9678b6;
+text-shadow: none;
+}
+
+::-webkit-selection {
+  color: #fff;
+  background: #9678b6;
+  text-shadow: none;
+}
+
+::-moz-selection {
+  color: #fff;
+  background: #9678b6;
+  text-shadow: none;
+}
