@@ -8,7 +8,7 @@ var hydra = 0;
 var witsend = 0;
 var enemypra = 0;
 var enemymra = 0;
-var enemyhp = 0;
+var enemyhp = 1000;
 var hydra_active = 0;
 var baron = 0;
 
