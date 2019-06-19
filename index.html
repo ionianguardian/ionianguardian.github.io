@@ -20,7 +20,9 @@
 <link rel="stylesheet" href="main.css">
 </head>
 
-<body> 
+<body>
+
+<div class="boxed">
 <h2>I &#x2764;&#xFE0E; Irelia, patch: 9.12</h2> 
 
 <div class="column">
@@ -88,14 +90,25 @@
 
 <div class="column">
 	<h4>
-		<label class="theLabels">Titanic Hydra on-hit dmg:</label>
-		<input id="hydra-input" class="theInputs" value='0' type='number' autocomplete='off' min='0'
+		<label class="theLabels">Irelia's max HP:</label>
+		<input id="hydra-input" class="theInputs" value='580' type='number' autocomplete='off' min='0'
 		onchange="if (isNaN(parseInt(this.value))|| parseInt(this.value)<0) this.value = '0';"/>
 	</h4>
 </div>
 <div id="hydra-slider">
 <div id="hydra-handle" class="ui-slider-handle"></div>
 </div>
+
+<h4>Titanic Hydra:</h4>
+<div id="hydra-active-slider">
+<div id="hydra-active-handle" class="ui-slider-handle"></div>
+</div>
+
+<h4>Enemies have Hand of Baron buff:</h4>
+<div id="baron-slider">
+<div id="baron-handle" class="ui-slider-handle"></div>
+</div>
+
 <br />
 <table id="extra-data-table"></table>
 <div class="column">
@@ -132,11 +145,7 @@
 <br />
 <table id="enemy-data-table"></table>
 
-
-
-
-
-
+</div>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

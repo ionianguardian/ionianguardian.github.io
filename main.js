@@ -9,6 +9,8 @@ var witsend = 0;
 var enemypra = 0;
 var enemymra = 0;
 var enemyhp = 0;
+var hydra_active = 0;
+var baron = 0;
 
 function pickHex(color1, color2, weight) {
     var p = weight;
@@ -277,6 +279,15 @@ function conqueror_transform(conqueror, enemy_type) {
   }
 }
 
+function hydra_dmg(hydra,hydra_active) {
+  if (hydra_active == 0)
+    return 0;
+  else if (hydra_active == 1)
+    return 5 + 0.01 * hydra;
+  else if (hydra_active == 2)
+    return 40 + 0.1 * hydra;
+}
+
 function dmg_mult(armor) {//also applied to magic resistance
   if (armor >= 0)
     return 100/(100 + armor);
@@ -299,22 +310,37 @@ function damage_reduction(pra,mra) {
   magic_dmg_part = mra_mult * magic_dmg_part;
 }
 
-function q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra) {
+function baron_reduction(enemy_type,baron) {
+  if (enemy_type > 0 && baron == 1) {
+    if (time > 40 * 60)
+      baron_red = 0.3;
+    else if (time > 30 * 60) 
+      baron_red = 0.42;
+    else 
+      baron_red = 0.5;
+
+    phys_dmg_part = baron_red * phys_dmg_part;
+    magic_dmg_part = baron_red * magic_dmg_part;
+  }
+}
+
+function q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron) {
   true_dmg_part = 0;
-  phys_dmg_part = base_q() + minion_dmg(enemy_type) + ad_dmg_part(conqueror,bad) + sheen_dmg(sheen) + hydra;
+  phys_dmg_part = base_q() + minion_dmg(enemy_type) + ad_dmg_part(conqueror,bad) + sheen_dmg(sheen) + hydra_dmg(hydra,hydra_active);
   magic_dmg_part = passive_dmg(passive, conqueror, bad) + witsend_dmg(witsend);
   conqueror_transform(conqueror, enemy_type) ;
   damage_reduction(enemy_stats(enemy_type)[1], enemy_stats(enemy_type)[2]);
+  baron_reduction(enemy_type,baron);
   result = true_dmg_part + phys_dmg_part + magic_dmg_part;
   return result;
 }
 
-function print_q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra) {
-  return (Math.floor(q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra))).toFixed(0);
+function print_q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron) {
+  return (Math.floor(q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron))).toFixed(0);
 }
 
-function perc_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra) {
-  perc = q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra) / enemy_stats(enemy_type)[0];
+function perc_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron) {
+  perc = q_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron) / enemy_stats(enemy_type)[0];
   if ( perc > 1 ) 
     return 1;
   else
@@ -330,37 +356,38 @@ function tad_mult(enemy_type, passive) {
   return true_dmg_part + phys_dmg_part + magic_dmg_part;  
 }
 
-function tad_needed(enemy_type,sheen,passive,conqueror,witsend,hydra) {
+function tad_needed(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron) {
   true_dmg_part = 0;
-  phys_dmg_part = base_q() + minion_dmg(enemy_type) + ad_dmg_part(conqueror,-base_ad()) + sheen_dmg(sheen) + hydra;
+  phys_dmg_part = base_q() + minion_dmg(enemy_type) + ad_dmg_part(conqueror,-base_ad()) + sheen_dmg(sheen) + hydra_dmg(hydra,hydra_active);
   magic_dmg_part =  passive_dmg(passive,conqueror,0) + witsend_dmg(witsend);
   conqueror_transform(conqueror, enemy_type) ;  
   damage_reduction(enemy_stats(enemy_type)[1], enemy_stats(enemy_type)[2]);
+  baron_reduction(enemy_type,baron);
 
   result = (enemy_stats(enemy_type)[0] - (true_dmg_part + phys_dmg_part + magic_dmg_part )) / tad_mult(enemy_type, passive);
   return result;
 }
 
-function print_q(enemy_type,sheen,passive,conqueror,witsend,hydra) {
-  return perc_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra).toFixed(2) + '|' + (Math.floor(tad_needed(enemy_type,sheen,passive,conqueror,witsend,hydra)).toFixed(0));
+function print_q(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron) {
+  return perc_dmg(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active,baron).toFixed(2) + '|' + (Math.floor(tad_needed(enemy_type,sheen,passive,conqueror,witsend,hydra,hydra_active)).toFixed(0));
 }
 
 function calculate_table() {
 
 	 data1 = [{
-      champ_dmg:  print_q_dmg (0,0,0,0,0,0), 
+      champ_dmg:  print_q_dmg (0,0,0,0,0,0,0,0), 
       combo: 'q', 
-      minion_dmg: print_q_dmg (1,0,0,0,0,0), 
-      caster:     print_q(1,0,0,0,0,0) , 
-      melee:      print_q(2,0,0,0,0,0),
-      siege:      print_q(3,0,0,0,0,0) , 
+      minion_dmg: print_q_dmg (1,0,0,0,0,0,0,0), 
+      caster:     print_q(1,0,0,0,0,0,0,0) , 
+      melee:      print_q(2,0,0,0,0,0,0,0),
+      siege:      print_q(3,0,0,0,0,0,0,0) , 
     }, {
-      champ_dmg:  print_q_dmg (0,0,1,0,0,0), 
+      champ_dmg:  print_q_dmg (0,0,1,0,0,0,0,0), 
       combo: 'pq', 
-      minion_dmg: print_q_dmg (1,0,1,0,0,0), 
-      caster:     print_q(1,0,1,0,0,0), 
-      melee:      print_q(2,0,1,0,0,0),
-      siege:      print_q(3,0,1,0,0,0), 
+      minion_dmg: print_q_dmg (1,0,1,0,0,0,0,0), 
+      caster:     print_q(1,0,1,0,0,0,0,0), 
+      melee:      print_q(2,0,1,0,0,0,0,0),
+      siege:      print_q(3,0,1,0,0,0,0,0), 
     } ];
 
     var dt = dynamicTable.config('main-data-table', 
@@ -371,19 +398,19 @@ function calculate_table() {
 
 
    data2 = [ {
-      champ_dmg:  print_q_dmg (0,sheen,0,0,0,0), 
+      champ_dmg:  print_q_dmg (0,sheen,0,0,0,0,0,0), 
       combo: 'qs', 
-      minion_dmg: print_q_dmg (1,sheen,0,0,0,0), 
-      caster:     print_q(1,sheen,0,0,0,0), 
-      melee:      print_q(2,sheen,0,0,0,0),
-      siege:      print_q(3,sheen,0,0,0,0), 
+      minion_dmg: print_q_dmg (1,sheen,0,0,0,0,0,0), 
+      caster:     print_q(1,sheen,0,0,0,0,0,0), 
+      melee:      print_q(2,sheen,0,0,0,0,0,0),
+      siege:      print_q(3,sheen,0,0,0,0,0,0), 
     }, {
-      champ_dmg:  print_q_dmg (0,sheen,1,0,0,0), 
+      champ_dmg:  print_q_dmg (0,sheen,1,0,0,0,0,0), 
       combo: 'pqs', 
-      minion_dmg: print_q_dmg (1,sheen,1,0,0,0), 
-      caster:     print_q(1,sheen,1,0,0,0), 
-      melee:      print_q(2,sheen,1,0,0,0),
-      siege:      print_q(3,sheen,1,0,0,0), 
+      minion_dmg: print_q_dmg (1,sheen,1,0,0,0,0,0), 
+      caster:     print_q(1,sheen,1,0,0,0,0,0), 
+      melee:      print_q(2,sheen,1,0,0,0,0,0),
+      siege:      print_q(3,sheen,1,0,0,0,0,0), 
     }];
 
     var dt2 = dynamicTable.config('sheen-data-table', 
@@ -393,11 +420,11 @@ function calculate_table() {
     dt2.load(data2);    
 
     data3 = [{
-      minion_dmg: print_q_dmg(1,sheen,passive,conqueror,witsend,hydra), 
-      caster: print_q(1,sheen,passive,conqueror,witsend,hydra), 
-      melee: print_q(2,sheen,passive,conqueror,witsend,hydra), 
-      siege: print_q(3,sheen,passive,conqueror,witsend,hydra),
-      super_minion: print_q(4,sheen,passive,conqueror,witsend,hydra)},
+      minion_dmg: print_q_dmg(1,sheen,passive,conqueror,witsend,hydra,hydra_active,baron), 
+      caster: print_q(1,sheen,passive,conqueror,witsend,hydra,hydra_active,baron), 
+      melee: print_q(2,sheen,passive,conqueror,witsend,hydra,hydra_active,baron), 
+      siege: print_q(3,sheen,passive,conqueror,witsend,hydra,hydra_active,baron),
+      super_minion: print_q(4,sheen,passive,conqueror,witsend,hydra,hydra_active,baron)},
     ];
 
     var dt3 = dynamicTable.config('extra-data-table', 
@@ -407,9 +434,9 @@ function calculate_table() {
     dt3.load(data3);
 
     data4 = [{
-      champ_dmg: print_q_dmg(0,sheen,passive,conqueror,witsend,hydra), 
-      champ_perc: print_q(0,sheen,passive,conqueror,witsend,hydra),  
-      champ_dmg_before_red: print_q_dmg(0,sheen,passive,conqueror,witsend,hydra,enemypra=0,enemymra=0)
+      champ_dmg: print_q_dmg(0,sheen,passive,conqueror,witsend,hydra,hydra_active,baron), 
+      champ_perc: print_q(0,sheen,passive,conqueror,witsend,hydra,hydra_active,baron),  
+      champ_dmg_before_red: print_q_dmg(0,sheen,passive,conqueror,witsend,hydra,hydra_active,baron,enemypra=0,enemymra=0)
     }];
 
     var dt4 = dynamicTable.config('enemy-data-table', 
@@ -434,7 +461,7 @@ $( function() {
 var handle = $( "#time-handle" );
 $( "#time-slider" ).slider({
   min: 65,
-  max: 2225,
+  max: 40*60+1,
   step: 1,
   value: 65,
   create: function() {
@@ -624,8 +651,8 @@ $( "#witsend-slider" ).slider({
 $( function() {
 var handle = $( "#hydra-handle" );
 $( "#hydra-slider" ).slider({
-  min: 0,
-  max: 38,
+  min: 580,
+  max: 3000,
   step: 1,
   create: function() {
     handle.text( $( this ).slider( "value" ) );
@@ -648,6 +675,50 @@ $("#hydra-input").change(function () {
     hydra = value;
     calculate_table();
 });
+
+
+$( function() {
+var handle = $( "#hydra-active-handle" );
+$( "#hydra-active-slider" ).slider({
+  min: 0,
+  max: 2,
+  step: 1,
+  create: function() {
+    handle.text( 'No' );
+  },
+  slide: function( event, ui ) {
+    if (ui.value == 0) 
+      handle.text( 'No' );
+    else if (ui.value == 1) 
+      handle.text( 'Passive' );
+    else if (ui.value == 2) 
+      handle.text( 'Active' );
+    hydra_active = ui.value;
+    calculate_table();
+  }
+});
+} );
+
+$( function() {
+var handle = $( "#baron-handle" );
+$( "#baron-slider" ).slider({
+  min: 0,
+  max: 1,
+  step: 1,
+  create: function() {
+    handle.text( 'No' );
+  },
+  slide: function( event, ui ) {
+    if (ui.value == 0) 
+      handle.text( 'No' );
+    else if (ui.value == 1) 
+      handle.text( 'Yes' );
+    baron = ui.value;
+    calculate_table();
+  }
+});
+} );
+
 
 $( function() {
 var handle = $( "#enemypra-handle" );
