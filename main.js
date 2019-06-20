@@ -1,7 +1,7 @@
 var time = 65;
 var lvl = 1;
 var bad = 0;
-var sheen = 1;
+var sheen = 0;
 var passive = 0;
 var conqueror = 0;
 var hydra = 0;
@@ -388,36 +388,42 @@ function calculate_table() {
       caster:     print_q(1,0,1,0,0,0,0,0), 
       melee:      print_q(2,0,1,0,0,0,0,0),
       siege:      print_q(3,0,1,0,0,0,0,0), 
-    } ];
+    }, {
+      champ_dmg:  print_q_dmg (0,1,0,0,0,0,0,0), 
+      combo: 'sq', 
+      minion_dmg: print_q_dmg (1,1,0,0,0,0,0,0), 
+      caster:     print_q(1,1,0,0,0,0,0,0) , 
+      melee:      print_q(2,1,0,0,0,0,0,0),
+      siege:      print_q(3,1,0,0,0,0,0,0) , 
+    }, {
+      champ_dmg:  print_q_dmg (0,1,1,0,0,0,0,0), 
+      combo: 'spq', 
+      minion_dmg: print_q_dmg (1,1,1,0,0,0,0,0), 
+      caster:     print_q(1,1,1,0,0,0,0,0), 
+      melee:      print_q(2,1,1,0,0,0,0,0),
+      siege:      print_q(3,1,1,0,0,0,0,0), 
+    }, {
+      champ_dmg:  print_q_dmg (0,2,0,0,0,0,0,0), 
+      combo: 'tq', 
+      minion_dmg: print_q_dmg (1,2,0,0,0,0,0,0), 
+      caster:     print_q(1,2,0,0,0,0,0,0) , 
+      melee:      print_q(2,2,0,0,0,0,0,0),
+      siege:      print_q(3,2,0,0,0,0,0,0) , 
+    }, {
+      champ_dmg:  print_q_dmg (0,2,1,0,0,0,0,0), 
+      combo: 'tpq', 
+      minion_dmg: print_q_dmg (1,2,1,0,0,0,0,0), 
+      caster:     print_q(1,2,1,0,0,0,0,0), 
+      melee:      print_q(2,2,1,0,0,0,0,0),
+      siege:      print_q(3,2,1,0,0,0,0,0), 
+    } 
+     ];
 
     var dt = dynamicTable.config('main-data-table', 
                          ['champ_dmg', 'combo', 'minion_dmg', 'caster', 'melee','siege', ], 
                          ['C', '+', 'M', 'c ' + print_enemy_hp(1) , 'm ' + print_enemy_hp(2), 's ' + print_enemy_hp(3)]);
 
-    dt.load(data1);
-
-
-   data2 = [ {
-      champ_dmg:  print_q_dmg (0,sheen,0,0,0,0,0,0), 
-      combo: 'qs', 
-      minion_dmg: print_q_dmg (1,sheen,0,0,0,0,0,0), 
-      caster:     print_q(1,sheen,0,0,0,0,0,0), 
-      melee:      print_q(2,sheen,0,0,0,0,0,0),
-      siege:      print_q(3,sheen,0,0,0,0,0,0), 
-    }, {
-      champ_dmg:  print_q_dmg (0,sheen,1,0,0,0,0,0), 
-      combo: 'pqs', 
-      minion_dmg: print_q_dmg (1,sheen,1,0,0,0,0,0), 
-      caster:     print_q(1,sheen,1,0,0,0,0,0), 
-      melee:      print_q(2,sheen,1,0,0,0,0,0),
-      siege:      print_q(3,sheen,1,0,0,0,0,0), 
-    }];
-
-    var dt2 = dynamicTable.config('sheen-data-table', 
-                         ['champ_dmg', 'combo', 'minion_dmg', 'caster', 'melee','siege', ], 
-                         ['C', '+', 'M', 'c ' + print_enemy_hp(1) , 'm ' + print_enemy_hp(2), 's '+print_enemy_hp(3)]);
-
-    dt2.load(data2);    
+    dt.load(data1);  
 
     data3 = [{
       minion_dmg: print_q_dmg(1,sheen,passive,conqueror,witsend,hydra,hydra_active,baron), 
@@ -574,9 +580,9 @@ $( "#sheen-slider" ).slider({
   min: 0,
   max: 2,
   step: 1,
-  value: 1,
+  value: 0,
   create: function() {
-    handle.text( 'Sheen' );
+    handle.text( 'No' );
   },
   slide: function( event, ui ) {
     if (ui.value == 0 )
