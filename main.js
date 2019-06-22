@@ -447,7 +447,7 @@ function calculate_table() {
 
     var dt4 = dynamicTable.config('enemy-data-table', 
                          ['champ_dmg_before_red', 'champ_dmg', 'champ_perc' ], 
-                         ['C before','C after','C %']);
+                         ['C before red','C after red','C % max hp']);
 
     dt4.load(data4);
 }
@@ -546,7 +546,7 @@ $( "#bad-slider" ).slider({
     bad = ui.value;
     calculate_table();
     $( ".column #bad-input" ).val( ui.value );
-    $( ".column #tad-input" ).val( ui.value + base_ad());
+    $( ".column #tad-input" ).val( parseInt(ui.value + base_ad()));
   }
 });
 } );
@@ -558,7 +558,7 @@ $("#bad-input").change(function () {
       value = 0;
     $("#bad-slider").slider("value", parseInt(value));
     $( "#bad-handle" ).text( value  + "|" + parseInt(value+base_ad()) );
-    $( ".column #tad-input" ).val( value + base_ad());
+    $( ".column #tad-input" ).val( parseInt(value + base_ad()));
     bad = value;
     calculate_table();
 });
