@@ -58,7 +58,8 @@ html {
 #enemymra-slider,
 #enemyhp-slider,
 #hydra-active-slider,
-#baron-slider {
+#baron-slider,
+#ourbaron-slider {
   width: 300px;
   margin-left: 9px;
   margin-right: 9px;
@@ -76,7 +77,8 @@ html {
 #enemymra-handle,
 #enemyhp-handle,
 #hydra-active-handle,
-#baron-handle {
+#baron-handle,
+#ourbaron-handle {
   width: 3.6em;
   height: 1.6em;
   top: 50%;

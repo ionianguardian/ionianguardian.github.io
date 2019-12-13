@@ -264,7 +264,7 @@ function witsend_dmg(witsend) {
 }
 
 function conqueror_ad(conqueror) {
-  return conqueror * (1.059 + 0.141 * lvl);
+  return conqueror * (1.094 + 0.106 * lvl);
 }
 
 function ad_dmg_part(conqueror,bad) {
@@ -273,9 +273,9 @@ function ad_dmg_part(conqueror,bad) {
 
 function conqueror_transform(conqueror, enemy_type) {
   if (conqueror == 5 && enemy_type == 0) {
-    true_dmg_part = 0.08 * (phys_dmg_part + magic_dmg_part);
-    phys_dmg_part = 0.92 * phys_dmg_part;
-    magic_dmg_part = 0.92 * magic_dmg_part;
+    true_dmg_part = 0.00 * (phys_dmg_part + magic_dmg_part);
+    phys_dmg_part = 1.00 * phys_dmg_part;
+    magic_dmg_part = 1.00 * magic_dmg_part;
   }
 }
 
@@ -621,8 +621,8 @@ $( function() {
 var handle = $( "#conqueror-handle" );
 $( "#conqueror-slider" ).slider({
   min: 0,
-  max: 5,
-  step: 1,
+  max: 10,
+  step: 2,
   create: function() {
     handle.text( $( this ).slider( "value" ) );
   },
